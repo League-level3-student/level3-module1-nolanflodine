@@ -2,14 +2,14 @@ package _01_IntroToArrayLists;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 /**
  * Copyright The League of Amazing Programmers 2013-2017 Level 3 Two ArrayList
  * Cleaning Exercises Duration=.00 Platform=Eclipse Type=Recipe Objectives=
  */
 
-public class _04_RemovingStuffFromArrayLists {
 
-	public static void main(String[] args) {
 
 		class Stuff {
 			public String type;
@@ -24,6 +24,10 @@ public class _04_RemovingStuffFromArrayLists {
 				type = "dirt";
 			}
 		}
+		public class _04_RemovingStuffFromArrayLists {
+
+			public static void main(String[] args) {
+			
 		ArrayList<Stuff> stuffIFoundInTheYard = new ArrayList<Stuff>();
 		stuffIFoundInTheYard.add(new Worm());
 		stuffIFoundInTheYard.add(new Dirt());
@@ -35,11 +39,14 @@ public class _04_RemovingStuffFromArrayLists {
 		System.out.println(stuffIFoundInTheYard.size());
 
 		/* TODO 1: Clean out the dirt but keep the delicious worms. */
+		int before = stuffIFoundInTheYard.size();
+		for (int i = 0; i < stuffIFoundInTheYard.size(); i++) {
+			if(stuffIFoundInTheYard.get(i).type==("worm")) {
+				stuffIFoundInTheYard.remove(i);
+			}
+		}
 		
-		
-		
-		
-		System.out.println(stuffIFoundInTheYard.size()); // should be 2
+		System.out.println(before-stuffIFoundInTheYard.size()); // should be 2
 
 		ArrayList<Character> truth = new ArrayList<Character>();
 		truth.add('c');
@@ -75,7 +82,15 @@ public class _04_RemovingStuffFromArrayLists {
 		truth.add('#');
 		/* TODO 2: Remove the hash symbols and print out the truth. */
 
-		
-		
+		for (int i = 0; i < truth.size(); i++) {
+			if(truth.get(i).equals('#')) {
+				truth.remove(i);
+			}
+		}
+		for (int j = 0; j < truth.size(); j++) {
+			System.out.println(truth.get(j));
+
+		}
 	}
 }
+
