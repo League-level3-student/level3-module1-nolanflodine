@@ -25,5 +25,6 @@ public class _00_StackDemo {
 		for(int i = 0; i < sz; i++){
 			System.out.println(flavors.pop());
 		}
+
 	}
 }

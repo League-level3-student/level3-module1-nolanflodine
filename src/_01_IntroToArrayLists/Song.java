@@ -25,7 +25,7 @@ public class Song {
 		this.songAddress = songAddress;
 	}
 
-	public void play() {
+	public  void play() {
 		loadFile();
 		if (songStream != null) {
 			loadPlayer();
@@ -39,8 +39,9 @@ public class Song {
 	}
 
 	public void stop() {
-		if (mp3Player != null)
+		if (mp3Player != null) {
 			mp3Player.close();
+		}
 	}
 
 	private void startSong() {
