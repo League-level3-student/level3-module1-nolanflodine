@@ -1,6 +1,7 @@
 package _03_IntroToStacks;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyListener;
 import java.util.Stack;
 
@@ -27,11 +28,15 @@ public class _02_TextUndoRedo implements KeyListener {
 	String keys = "";
 	Stack<Character> chars = new Stack<Character>();
 	Stack<Character> deleted = new Stack<Character>();
-
+	String currentText = "";
+	char del;
+	String l;
 	public static void main(String[] args) {
 		_02_TextUndoRedo t = new _02_TextUndoRedo();
 		t.gui();
-		t.update();
+		for (int i = 0; i < 10; i--) {
+			t.update();
+		}
 	}
 
 	void gui() {
@@ -46,11 +51,9 @@ public class _02_TextUndoRedo implements KeyListener {
 	}
 
 	void update() {
-		String currentText = label.getText();
-		// label.setText(currentText + keys);
+		currentText = label.getText();
 		label.setText(currentText + String.valueOf(chars.pop()));
 		label.paintImmediately(label.getVisibleRect());
-
 	}
 
 	@Override
@@ -59,25 +62,29 @@ public class _02_TextUndoRedo implements KeyListener {
 		if (e.getKeyChar() != '') {
 			keys = String.valueOf((e.getKeyChar()));
 			System.out.println("Key Typed: " + e.getKeyChar());
+			if(e.getKeyChar()!='`') {
 			chars.push(e.getKeyChar());
-		} else {
-			String l = label.getText();
-			char del = l.charAt(l.length() - 1);
-			deleted.push(del);
-			System.out.println(deleted.pop());
-			try {
-			if(l.isEmpty()==false) {
-			label.setText(l.substring(0,l.length()-1));
-			label.paintImmediately(label.getVisibleRect());
 			}
-			
-		}catch(NullPointerException f) {
-			label.setText("");
+			if (e.getKeyChar()=='`') {
+				System.out.println("yes");
+				label.setText(currentText + String.valueOf(deleted.pop()));
+				label.paintImmediately(label.getVisibleRect());
+			}
+		} else {
+			l = label.getText();
+			del = l.charAt(l.length() - 1);
+			deleted.push(del);
+			// System.out.println(deleted.pop());
+			try {
+				if (l.isEmpty() == false) {		
+						label.setText(l.substring(0, l.length() - 1));
+						label.paintImmediately(label.getVisibleRect());				
+				}
+			} catch (NullPointerException f) {
+				label.setText("");
+			}
 		}
-		}
-
 		update();
-
 	}
 
 	@Override
