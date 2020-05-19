@@ -1,5 +1,6 @@
 package _04_HangMan;
 
+import java.awt.Graphics;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -51,6 +52,11 @@ public class Utilities {
 		}
 		
 		return totalLines;
+		
+	}
+
+	public void paint(Graphics g) {
+		// TODO Auto-generated method stub
 		
 	}
 }
