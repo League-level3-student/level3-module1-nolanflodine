@@ -33,7 +33,7 @@ public class IntegerStack {
 		//C. iterate through the new array and copy every element from the
 		//   member array to the new array
 		for (int i = 0; i < num3.length; i++) {
-			num3[i] = num[1];
+			num3[i] = num[i];
 		}
 		//D. set the member array equal to the new array
 		num = num3;

@@ -52,6 +52,10 @@ public class HangMan extends Utilities implements KeyListener {
 		label.setText(currentText + String.valueOf(chars.pop()));
 		label.paintImmediately(label.getVisibleRect());
 	}
+	public void paintComponent(Graphics g) {
+		 g.drawString("_______", 20, 150);
+
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
