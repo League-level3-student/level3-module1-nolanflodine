@@ -2,11 +2,15 @@ PImage[] person = new PImage[7];
 int[] dashX = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600};
 int[] wrongX = {400, 450, 500};
 int[] wrongY = {200, 300, 400};
+char[] empty;
 char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 ArrayList<Character> chars = new ArrayList<Character>();
 ArrayList<Character> wrong = new ArrayList<Character>();
 ArrayList<PImage> dashes = new ArrayList<PImage>();
 ArrayList<Character> newList;
+HashMap<Character, Integer> dup = new HashMap<Character, Integer>();
+String word;
+char[] wordChars;
 PImage hanger;
 PImage dash1;
 PImage dash2;
@@ -18,7 +22,6 @@ PImage dash7;
 PImage dash8;
 PImage dash9;
 PImage dash10;
-String word;
 int typed;
 int dashY = 700;
 int wrongx = 0;
@@ -27,12 +30,14 @@ int wrongCount = 0;
 int len;
 int pos = -2;
 int size = 0;
+int thing = 0;
 int sub;
 boolean wordPicked = false;
 boolean added = false;
 boolean loss = false;
 boolean win = false;
-long wait = 0;
+boolean stopIt = false;
+int t;
 void setup() {
   size(600, 800);
   background(255);
@@ -76,17 +81,21 @@ void setup() {
 
 void draw() {
   background(255);
+  /*if(millis()-1000>wait){
+  wait = millis()-1000;
+  }
+  */
   if (!loss&&!win) {
-    System.out.println(word);
-    duplicates();
     charLoc();
     word();
+    duplicates();
     dude();
     dash();
+    Timer();
     wrong();
-    System.out.println("charSize: " + chars.size());
-    System.out.println("wrongSize: " + wrong.size());
-    System.out.println("wordLength: " + word.length());
+      if (wrongCount==7) { 
+          image(person[6], 100, 175);
+      }
   } else if (loss) {
     textSize(96);
     text("You Lose", 80, 200);
@@ -111,10 +120,16 @@ void draw() {
     }
   }
   if (wrongCount==7) { 
+    if(millis() >= t+1000){
     loss = true;
+    }
+  //}
   }
-  if (chars.size()-wrong.size()==word.length()) {
+  if (chars.size()+thing-wrong.size()==word.length()) {
+    if(millis() >= t+1000){
     win = true;
+    }
+    //}
   }
 }
 
@@ -126,11 +141,20 @@ void winner() {
   text("Press r to Restart", 90, 650);
 }
 
+void Timer(){
+  if(wrongCount!=7&&chars.size()+thing-wrong.size()!=word.length()){
+t = millis();
+  }
+}
+
+
 void restart() {
+  empty = new char[wordChars.length];
   if (key=='r') {
     win = false;
     loss = false;
     wordPicked = false;
+    stopIt = false;
     word();
     wrongCount = 0;
     wrongx = 0;
@@ -139,9 +163,13 @@ void restart() {
 }
 
 void keyPressed() {
+  if(wrongCount<7){
   typed = keyCode;
   for (int i = 0; i<alphabet.length; i++);
-  chars.add(alphabet[typed-65]);//alphabet keyCode starts at 65
+  if (!chars.contains(alphabet[typed-65])) {
+    chars.add(alphabet[typed-65]);//alphabet keyCode starts at 65
+  }
+  }
 }
 
 void word() {
@@ -167,13 +195,35 @@ void dash() {
   }
 }
 
-void duplicates(){
-//HashSet does not work on processing
-//Could not make HashMap work
-//Contains.Frequencies does not work 
+public void duplicates() {
+  if (!stopIt) {
+    thing = 0;
+    wordChars = word.toCharArray();
+    for(int i = 0; i<alphabet.length; i++){
+    dup.remove(alphabet[i]);
+    }
+    for (char value : wordChars) {
+      if ( value>wordChars.length) {
+        stopIt = true;
+      }
+      if (Character.isAlphabetic(value)) {
+
+        if (dup.containsKey(value)) {
+          dup.put(value, dup.get(value) + 1);
+          if (dup.get(value)>1) {
+            thing++;
+          }
+        } else {
+          dup.put(value, 1);
+        }
+      }
+    }
+  }
+  System.out.println(dup);
 }
 
 void charLoc() {
+  print(size);
   fill(0, 255, 0);
   textSize(36);
   for (int i = 0; i<len; i++) {
@@ -181,11 +231,13 @@ void charLoc() {
       if (word!=null) {
         if (word.charAt(i)==chars.get(j)) { 
           text(chars.get(j), dashX[i]+15, dashY+10);
+          size = chars.size();
         }
       }
     }
   }
 }
+
 
 void wrong() {
   wrongCount = wrong.size();
